@@ -26,10 +26,11 @@ public class PlayerMovement : MonoBehaviour
         float vertical = Input.GetAxis("Vertical");
 
         m_Movement.Set(horizontal, 0f, vertical);
-        m_Movement.Normalize();
+        m_Movement.Normalize();      
 
         bool hasHorizontalInput = !Mathf.Approximately(horizontal, 0f);
         bool hasVerticalInput = !Mathf.Approximately(vertical, 0f);
+
         bool isWalking = hasHorizontalInput || hasVerticalInput;
         m_Animator.SetBool("IsWalking", isWalking);
 
@@ -55,4 +56,5 @@ public class PlayerMovement : MonoBehaviour
         m_Rigidbody.MovePosition(m_Rigidbody.position + m_Movement * m_Animator.deltaPosition.magnitude);
         m_Rigidbody.MoveRotation(m_Rotation);
     }
+
 }

@@ -995,6 +995,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turnSpeed: 20
+  playerSpeed: 200
+  isRunning: 0
 --- !u!82 &2112354076351602816
 AudioSource:
   m_ObjectHideFlags: 0

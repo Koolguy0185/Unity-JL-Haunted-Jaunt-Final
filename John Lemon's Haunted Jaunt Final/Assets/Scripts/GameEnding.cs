@@ -2,21 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
 
 public class GameEnding : MonoBehaviour
 {
     public float fadeDuration = 1f;
     public float displayImageDuration = 1f;
     public GameObject player;
+    public GameObject timer;
     public CanvasGroup exitBackgroundImageCanvasGroup;
     public CanvasGroup caughtBackgroundImageCanvasGroup;
+    public CanvasGroup timesUpBackgroundImageCanvasGroup;
     public AudioSource exitAudio;
     public AudioSource caughtAudio;
+    public TextMeshProUGUI timerText;
 
     bool m_IsPlayerAtExit;
     bool m_IsPlayerCaught;
     bool m_HasAudioPlayed;
     float m_Timer;
+    int m_GameTime;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -31,15 +37,40 @@ public class GameEnding : MonoBehaviour
         m_IsPlayerCaught = true;
     }
 
+    private void Start()
+    {
+        timer.SetActive(true);
+        m_GameTime = 90;
+        timerText.text = "Timer: " + m_GameTime;
+        StartCoroutine(DecreaseTime());
+    }
+
+    IEnumerator DecreaseTime()
+    {
+        yield return new WaitForSeconds(1);
+        m_GameTime--;
+        timerText.text = "Timer: " + m_GameTime;
+        StartCoroutine(DecreaseTime());
+    }
+
     private void Update()
     {
+
         if(m_IsPlayerAtExit)
         {
+            timer.SetActive(false);
             EndLevel(exitBackgroundImageCanvasGroup, false, exitAudio);
         }
         else if (m_IsPlayerCaught)
         {
+            timer.SetActive(false);
             EndLevel(caughtBackgroundImageCanvasGroup, true, caughtAudio);
+        }
+        else if(m_GameTime == 0)
+        {
+            StopAllCoroutines();
+            timer.SetActive(false);
+            EndLevel(timesUpBackgroundImageCanvasGroup, true, caughtAudio);
         }
     }
 
@@ -65,6 +96,5 @@ public class GameEnding : MonoBehaviour
                 Application.Quit();
             }
         }
-
     }
 }
