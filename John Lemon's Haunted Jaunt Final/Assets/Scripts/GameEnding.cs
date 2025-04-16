@@ -61,7 +61,12 @@ public class GameEnding : MonoBehaviour
             weaponText.SetActive(false);
         }
 
-        if(m_IsPlayerAtExit)
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+
+        if (m_IsPlayerAtExit)
         {
             timer.SetActive(false);
             weaponText.SetActive(false);
