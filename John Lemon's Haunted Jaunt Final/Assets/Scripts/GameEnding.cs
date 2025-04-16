@@ -11,6 +11,7 @@ public class GameEnding : MonoBehaviour
     public float displayImageDuration = 1f;
     public GameObject player;
     public GameObject timer;
+    public GameObject weaponText;
     public CanvasGroup exitBackgroundImageCanvasGroup;
     public CanvasGroup caughtBackgroundImageCanvasGroup;
     public CanvasGroup timesUpBackgroundImageCanvasGroup;
@@ -55,24 +56,31 @@ public class GameEnding : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            weaponText.SetActive(false);
+        }
 
         if(m_IsPlayerAtExit)
         {
             timer.SetActive(false);
+            weaponText.SetActive(false);
             EndLevel(exitBackgroundImageCanvasGroup, false, exitAudio);
         }
         else if (m_IsPlayerCaught)
         {
             timer.SetActive(false);
+            weaponText.SetActive(false);
             EndLevel(caughtBackgroundImageCanvasGroup, true, caughtAudio);
         }
-        else if(m_GameTime == 0)
+        else if(m_GameTime == 0 && (!m_IsPlayerAtExit || !m_IsPlayerCaught))
         {
             StopAllCoroutines();
             timer.SetActive(false);
+            weaponText.SetActive(false);
             EndLevel(timesUpBackgroundImageCanvasGroup, true, caughtAudio);
         }
-    }
+    } 
 
     void EndLevel(CanvasGroup imageCanvasGroup, bool doRestart, AudioSource audioSoure)
     {

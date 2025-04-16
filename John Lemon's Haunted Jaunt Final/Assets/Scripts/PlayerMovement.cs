@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public GameObject weapon;
     public float turnSpeed = 20f;
+    bool m_UsedWeapon;
 
     Animator m_Animator;
     Rigidbody m_Rigidbody;
@@ -18,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
         m_Animator = GetComponent<Animator>();
         m_Rigidbody = GetComponent<Rigidbody>();
         m_AudioSource = GetComponent<AudioSource>();
+        m_UsedWeapon = false;
     }
 
     void FixedUpdate()
@@ -49,6 +52,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 desiredForward = Vector3.RotateTowards(transform.forward, m_Movement, turnSpeed * Time.deltaTime, 0f);
         m_Rotation = Quaternion.LookRotation(desiredForward);
 
+        UseOneTimeWeapon();
     }
 
     void OnAnimatorMove()
@@ -57,4 +61,15 @@ public class PlayerMovement : MonoBehaviour
         m_Rigidbody.MoveRotation(m_Rotation);
     }
 
+    void UseOneTimeWeapon()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (!m_UsedWeapon)
+            {
+                weapon.SetActive(true);
+                m_UsedWeapon = true;
+            }
+        }
+    }
 }
